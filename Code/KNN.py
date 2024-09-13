@@ -4,22 +4,18 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.neighbors import KNeighborsClassifier, KNeighborsRegressor
 from sklearn.metrics import accuracy_score, classification_report, mean_squared_error, confusion_matrix
 
-
 # Correct file path
-file_path = r'Dataset\Student-Employability-Datasets.xlsx'
+file_path = r'D:\CS(Python)\AI\Student-Employability-Datasets.xlsx'
 
 # Load the Excel file
 df = pd.read_excel(file_path, sheet_name='Data')
 
-# Print the column names to verify
-print("Column Names in DataFrame:", df.columns)
-
-# Prepare data for classification
-X_class = df[['COMMUNICATION SKILLS', 'Student Performance Rating']]
+# Prepare data for classification using the best features
+X_class = df[['GENERAL APPEARANCE', 'MANNER OF SPEAKING', 'SELF-CONFIDENCE']]
 y_class = df['CLASS']  # Target column for classification
 
 # Split the data into training and testing sets for classification
-X_train_class, X_test_class, y_train_class, y_test_class = train_test_split(X_class, y_class, test_size=0.2)
+X_train_class, X_test_class, y_train_class, y_test_class = train_test_split(X_class, y_class, test_size=0.2, random_state=40)
 
 # Standardize the features
 scaler = StandardScaler()
@@ -27,40 +23,45 @@ X_train_class_scaled = scaler.fit_transform(X_train_class)
 X_test_class_scaled = scaler.transform(X_test_class)
 
 # Initialize the KNN classifier
-knn_classifier = KNeighborsClassifier(n_neighbors=3)
+knn_classifier = KNeighborsClassifier(n_neighbors=5)  # You can adjust n_neighbors if needed
 
 # Train the classifier
 knn_classifier.fit(X_train_class_scaled, y_train_class)
 
+# Predict class labels for the test set
 y_pred_class = knn_classifier.predict(X_test_class_scaled)
 
-confusion = confusion_matrix (y_test_class, y_pred_class)
-print(f"\nConfusion Matrix: {confusion}")
-# Generate the classification report
+# Evaluate the classification model
+confusion = confusion_matrix(y_test_class, y_pred_class)
+print(f"\nConfusion Matrix:\n{confusion}")
+
 class_report = classification_report(y_test_class, y_pred_class)
 print("\nClassification Report:")
 print(class_report)
-# Evaluate the classification model
+
 accuracy = accuracy_score(y_test_class, y_pred_class)
 print(f"Classification Accuracy: {accuracy * 100:.2f}%")
 
-
-
-# Prepare data for regression
-X_reg = df[['COMMUNICATION SKILLS']]  # Feature column for regression
+# Prepare data for regression using the best features
+X_reg = df[['GENERAL APPEARANCE', 'MANNER OF SPEAKING', 'SELF-CONFIDENCE']]  # Feature column for regression
 y_reg = df['Student Performance Rating']  # Target column for regression
 
 # Split the data into training and testing sets for regression
 X_train_reg, X_test_reg, y_train_reg, y_test_reg = train_test_split(X_reg, y_reg, test_size=0.2, random_state=40)
 
+# Standardize the features for regression
+scaler_reg = StandardScaler()
+X_train_reg_scaled = scaler_reg.fit_transform(X_train_reg)
+X_test_reg_scaled = scaler_reg.transform(X_test_reg)
+
 # Initialize the KNN regressor
-knn_regressor = KNeighborsRegressor(n_neighbors=5)
+knn_regressor = KNeighborsRegressor(n_neighbors=4)
 
 # Train the regressor
-knn_regressor.fit(X_train_reg, y_train_reg)
+knn_regressor.fit(X_train_reg_scaled, y_train_reg)
 
 # Predict the values for the test set
-y_pred_reg = knn_regressor.predict(X_test_reg)
+y_pred_reg = knn_regressor.predict(X_test_reg_scaled)
 
 # Evaluate the regression model
 mse = mean_squared_error(y_test_reg, y_pred_reg)
