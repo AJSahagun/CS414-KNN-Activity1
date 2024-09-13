@@ -68,7 +68,7 @@ all_features = ['GENERAL APPEARANCE', 'MANNER OF SPEAKING', 'PHYSICAL CONDITION'
 best_accuracy = 0
 best_features = None
 
-for r in range(1, len(all_features) + 1):
+for r in range(2, 4):  # r will be 2, or 3
     for feature_set in combinations(all_features, r):
         print(f"\nEvaluating Features: {feature_set}")
         accuracy = evaluate_features(feature_set)
