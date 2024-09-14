@@ -1,4 +1,6 @@
 import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
 from os import path
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
@@ -28,6 +30,12 @@ X_train_class, X_test_class, y_train_class, y_test_class = train_test_split(X_cl
 scaler = StandardScaler()
 X_train_class_scaled = scaler.fit_transform(X_train_class)
 X_test_class_scaled = scaler.transform(X_test_class)
+
+X = X_class.to_numpy() #standardize X_scaled for graph plotting
+X_train = X_train_class.to_numpy()
+X_test = X_test_class.to_numpy()
+y_train_class_scaled = y_train_class.map({'Employable': 1, 'LessEmployable': 0}).to_numpy()
+y_test_class_scaled = y_test_class.map({'Employable': 1, 'LessEmployable': 0}).to_numpy()
 
 # Initialize the KNN classifier
 knn_classifier = KNeighborsClassifier(n_neighbors=5)  # You can adjust n_neighbors if needed
@@ -78,3 +86,36 @@ print(f"\nRegression Mean Squared Error: {mse:.2f}")
 print("\nActual vs. Predicted (Regression):")
 for actual, predicted in zip(y_test_reg[:5], y_pred_reg[:5]):  # Show first 5 predictions for simplicity
     print(f"Actual: {actual:.2f}, Predicted: {predicted:.2f}")
+    
+# Creating a mesh grid for 3D space
+x_min, x_max = X[:, 0].min() - 1, X[:, 0].max() + 1
+y_min, y_max = X[:, 1].min() - 1, X[:, 1].max() + 1
+z_min, z_max = X[:, 2].min() - 1, X[:, 2].max() + 1
+xx, yy, zz = np.meshgrid(np.linspace(x_min, x_max, 30),
+                         np.linspace(y_min, y_max, 30),
+                         np.linspace(z_min, z_max, 30))
+
+# Predict class for each point in the meshgrid
+# !Fix this to reflect raw data. Not scaled.
+grid_points = np.c_[xx.ravel(), yy.ravel(), zz.ravel()]
+Z = knn_classifier.predict(grid_points)
+Z = Z.reshape(xx.shape)
+
+# Plot the 3D scatter plot
+fig = plt.figure(figsize=(10, 7))
+ax = fig.add_subplot(111, projection='3d')
+
+# # TODO Plot the decision boundaries using the meshgrid
+# ax.scatter(xx, yy, zz, c=Z, alpha=0.1, cmap='coolwarm', marker='.')
+
+# Plot the actual data points
+ax.scatter(X_train[:, 0], X_train[:, 1], X_train[:, 2], c=y_train_class_scaled, cmap='coolwarm', marker='o', edgecolor='k')
+ax.scatter(X_test[:, 0], X_test[:, 1], X_test[:, 2], c=y_test_class_scaled, cmap='coolwarm', marker='^', edgecolor='k')
+
+# Labels and title
+ax.set_xlabel('GENERAL APPEARANCE')
+ax.set_ylabel('MANNER OF SPEAKING')
+ax.set_zlabel('SELF CONFIDENCE')
+ax.set_title('KNN Classification of Student Employability')
+
+plt.show()
