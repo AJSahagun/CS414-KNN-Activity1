@@ -1,15 +1,22 @@
 import pandas as pd
+from os import path
 from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.preprocessing import StandardScaler
 from sklearn.neighbors import KNeighborsClassifier, KNeighborsRegressor
 from sklearn.metrics import accuracy_score, classification_report, mean_squared_error, confusion_matrix
 from itertools import combinations
 
-# Correct file path
-file_path = r'.\Dataset\Student-Employability-Datasets.xlsx'
+# Get the project root
+PROJECT_ROOT = path.abspath(path.dirname(path.dirname(__file__)))
+
+# Define the data directory path
+DATA_DIR = path.join(PROJECT_ROOT, "Dataset")
+
+# Define the data file path
+DATA_FILE = path.join(DATA_DIR, "Student-Employability-Datasets.xlsx")
 
 # Load the Excel file
-df = pd.read_excel(file_path, sheet_name='Data')
+df = pd.read_excel(DATA_FILE, sheet_name='Data')
 
 # Print the column names to verify
 print("Column Names in DataFrame:", df.columns)
