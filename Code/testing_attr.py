@@ -6,7 +6,7 @@ from sklearn.metrics import accuracy_score, classification_report, mean_squared_
 from itertools import combinations
 
 # Correct file path
-file_path = r'D:\CS(Python)\AI\Student-Employability-Datasets.xlsx'
+file_path = r'.\Dataset\Student-Employability-Datasets.xlsx'
 
 # Load the Excel file
 df = pd.read_excel(file_path, sheet_name='Data')
