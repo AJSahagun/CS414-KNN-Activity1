@@ -1,14 +1,21 @@
+from os import path
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.neighbors import KNeighborsClassifier, KNeighborsRegressor
 from sklearn.metrics import accuracy_score, classification_report, mean_squared_error, confusion_matrix
 
-# Correct file path
-file_path = r'.\Dataset\Student-Employability-Datasets.xlsx'
+# Get the project root
+PROJECT_ROOT = path.abspath(path.dirname(path.dirname(__file__)))
+
+# Define the data directory path
+DATA_DIR = path.join(PROJECT_ROOT, "Dataset")
+
+# Define the data file path
+DATA_FILE = path.join(DATA_DIR, "Student-Employability-Datasets.xlsx")
 
 # Load the Excel file
-df = pd.read_excel(file_path, sheet_name='Data')
+df = pd.read_excel(DATA_FILE, sheet_name='Data')
 
 # Prepare data for classification using the best features
 X_class = df[['GENERAL APPEARANCE', 'MANNER OF SPEAKING', 'SELF-CONFIDENCE']]
