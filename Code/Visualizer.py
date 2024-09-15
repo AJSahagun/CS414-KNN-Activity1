@@ -140,11 +140,75 @@ def plot_3D():
     # Show the figure
     plt.show()
 
+def plot_2D():
+    # Define Variables Needed for Plotting
+    X = scaler.fit_transform(X_class)
+    y_train_class_scaled = y_train_class.map({'Employable': 1, 'LessEmployable': 0}).to_numpy()
+    y_test_class_scaled = y_test_class.map({'Employable': 1, 'LessEmployable': 0}).to_numpy()
+    
+    # Take user input for feature selection
+    plot_2D_input = input(f"The dataset considers three feature. Choose which feature to EXCLUDE\n[1] GENERAL APPEARANCE\n[2] MANNER OF SPEAKING\n[3] SELF CONFIDENCE\n:")
+
+    # Exit logic for invalid inputs
+    try:
+        plot_2D_input = int(plot_2D_input)
+        if plot_2D_input < 1 or plot_2D_input > 3:
+            print("Input is out of range.")
+            return
+    except ValueError:
+        print("Input is out of range.")
+        return
+    
+    # Exclude selected feature
+    plot_2D_input = int(plot_2D_input)-1
+    X_2D = np.delete(X, plot_2D_input, axis=1)
+    X_2D_train = np.delete(X_train_class_scaled, plot_2D_input, axis=1)
+    X_2D_test = np.delete(X_test_class_scaled, plot_2D_input, axis=1)    
+        
+    # Create a meshgrid for plotting decision boundaries
+    x_min, x_max = X_2D[:, 0].min() - 1, X_2D[:, 0].max() + 1
+    y_min, y_max = X_2D[:, 1].min() - 1, X_2D[:, 1].max() + 1
+    xx, yy = np.meshgrid(np.linspace(x_min, x_max, 30), np.linspace(y_min, y_max, 30))
+    
+    # Predict class for each point in the meshgrid
+    grid_points = np.c_[xx.ravel(), yy.ravel()]
+    Z = knn_classifier.predict(np.c_[grid_points, np.zeros(grid_points.shape[0])])  # Adding dummy feature to match original model
+    Z = Z.reshape(xx.shape)
+    Z_numeric = np.where(Z == 'LessEmployable', 0, 1)  # Convert class to numerical values
+    
+    # Plot the decision boundaries and the data points
+    plt.figure(figsize=(10, 6))
+    plt.contourf(xx, yy, Z_numeric, alpha=0.3, cmap='coolwarm')
+    plt.scatter(X_2D_train[:, 0], X_2D_train[:, 1], c=y_train_class_scaled, cmap='coolwarm', edgecolor='k', marker='o')
+    plt.scatter(X_2D_test[:, 0], X_2D_test[:, 1], c=y_test_class_scaled, cmap='coolwarm', edgecolor='k', marker='^')
+
+    # Create a legend
+    handles = [
+        Line2D([0], [0], marker='o', color='w', label='Training Employable',
+            markerfacecolor='red', markersize=10, markeredgecolor='k'),
+        Line2D([0], [0], marker='^', color='w', label='Test Employable',
+            markerfacecolor='red', markersize=10, markeredgecolor='k'),
+        Line2D([0], [0], marker='o', color='w', label='Training Less Employable',
+            markerfacecolor='blue', markersize=10, markeredgecolor='k'),
+        Line2D([0], [0], marker='^', color='w', label='Test Less Employable',
+            markerfacecolor='blue', markersize=10, markeredgecolor='k')
+    ]
+    plt.legend(handles=handles, loc='best')
+    
+    # Add labels and title
+    feature_names = ['GENERAL APPEARANCE', 'MANNER OF SPEAKING', 'SELF-CONFIDENCE']
+    feature_labels = [name for i, name in enumerate(feature_names) if i != plot_2D_input]
+    plt.xlabel(feature_labels[0])
+    plt.ylabel(feature_labels[1])
+    plt.title('2D KNN Classification')
+
+    # Show the plot
+    plt.show()
 
 
 # Menu navigation
 def menu():
-    menu_input = input(f"\n\n[C] Print Classification evaluation [R] Print Regression evaluation [3] 3D Evaluation [E] Exit: ")
+    menu_input = input(f"\n\n[C] Print Classification evaluation [R] Print Regression evaluation [2] 2D Visualization [3] 3D Visualization [E] Exit \n: ")
     if menu_input.lower() == 'c':
         ev_class()
         menu()
@@ -154,7 +218,9 @@ def menu():
     elif menu_input.lower() == '3':
         plot_3D()
         menu()
-    # TODO: add 2d plotting for combinatorial of 2 features
+    elif menu_input.lower() == '2':
+        plot_2D()
+        menu()
     else:
         return
 
