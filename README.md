@@ -69,7 +69,7 @@
 
 ![Product Name Screen Shot][product-screenshot]
 
-Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `github_username`, `repo_name`, `twitter_handle`, `linkedin_username`, `email_client`, `email`, `project_title`, `project_description`
+This project implements a K-Nearest Neighbors (KNN) algorithm for predicting and classifying student employability based on various features. The dataset used is "Students' Employability from the Philippines" obtained from Kaggle.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -86,6 +86,12 @@ Here's a blank template to get started: To avoid retyping too much info. Do a se
 <!-- GETTING STARTED -->
 ## Getting Started
 
+The project consists of three main Python scripts:
+
+1. `testing_attr.py`: Tests different feature combinations to find the most accurate set of features for prediction.
+2. `KNN.py`: Implements the KNN algorithm for both classification and regression tasks.
+3. `Visualizer.py`: Provides data visualization capabilities, including 2D and 3D plots of the classification results.
+
 To get a local copy up and running follow these simple example steps.
 
 ### Prerequisites
@@ -93,6 +99,10 @@ To get a local copy up and running follow these simple example steps.
 Before you begin, ensure you have met the following requirements:
 * Python 3.7 or higher
 * pip (Python package installer)
+
+### Dataset
+
+The dataset used in this project is ["Student-Employability-Datasets.xlsx"](https://www.kaggle.com/datasets/anashamoutni/students-employability-dataset), which should be placed in a "Dataset" folder in the project root directory.
 
 ### Installation
 
@@ -116,6 +126,7 @@ Before you begin, ensure you have met the following requirements:
    pandas
    scikit-learn
    openpyxl
+   matplotlib
    ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -125,21 +136,23 @@ Before you begin, ensure you have met the following requirements:
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-To run the KNN analysis:
+1. Run `testing_attr.py` to determine the best features for prediction:
+   ```
+   python testing_attr.py
+   ```
+   This script will output the best combination of features and their corresponding accuracy.
 
-1. Open a terminal or command prompt
-2. Navigate to the project directory
-3. Run the Python script:
-   ```sh
+2. Run `KNN.py` to perform KNN classification and regression:
+   ```
    python KNN.py
    ```
+   This script will output the classification report, confusion matrix, and regression results.
 
-The script will output:
-- Confusion Matrix
-- Classification Report
-- Classification Accuracy
-- Regression Mean Squared Error
-- Sample of Actual vs. Predicted values for regression
+3. Run `Visualizer.py` for interactive data visualization:
+   ```
+   python Visualizer.py
+   ```
+   This script provides a menu-driven interface to view classification and regression results, as well as 2D and 3D visualizations of the data.
 
 _For detailed explanation, please refer to the [Documentation](https://example.com)_
 
@@ -153,7 +166,26 @@ You can customize the following parameters in the code:
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+## Features
 
+- Feature selection: The project tests various combinations of features to find the most accurate set for prediction.
+- KNN Classification: Predicts whether a student is "Employable" or "Less Employable" based on selected features.
+- KNN Regression: Predicts the "Student Performance Rating" based on the same features.
+- Data Visualization: Provides 2D and 3D visualizations of the classification results, helping to understand the decision boundaries and data distribution.
+
+## Project Structure
+
+```
+project_root/
+│
+├── Dataset/
+│   └── Student-Employability-Datasets.xlsx
+│
+└── Dataset/
+    ├── testing_attr.py
+    ├── KNN.py
+    └── Visualizer.py
+```
 
 <!-- ROADMAP -->
 ## Roadmap
@@ -161,12 +193,12 @@ You can customize the following parameters in the code:
 - [x] Data Collection
 - [x] KNN Algorithm Implementation
     - [x] KNN Testing
-    - [ ] Data Visualization
+    - [x] Data Visualization
 - [ ] Documentation
     - [ ] Introduction
     - [ ] Data with Citation
-    - [ ] Process
-    - [ ] Testing Procedure
+    - [x] Process
+    - [x] Testing Procedure
     - [ ] Results
     - [ ] Conclusion
 
@@ -209,23 +241,12 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 
 
-<!-- CONTACT -->
-## Contact
-
-AJ Sahagun - aajsahagun@gmail.com
-
-Project Link: [https://github.com/AJSahagun/CS414-KNN-Activity1](https://github.com/AJSahagun/CS414-KNN-Activity1)
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-* []()
-* []()
-* []()
+* [Students' Employability Dataset - Philippines](https://www.kaggle.com/datasets/anashamoutni/students-employability-dataset)
+* [K-Nearest Neighbors (KNN) Classification with scikit-learn](https://www.datacamp.com/tutorial/k-nearest-neighbor-classification-scikit-learn)
+* [Data Visualization using Matplotlib in Python](https://www.datacamp.com/tutorial/k-nearest-neighbor-classification-scikit-learn)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
