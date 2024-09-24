@@ -44,7 +44,7 @@ knn_classifier = KNeighborsClassifier(n_neighbors=5)  # You can adjust n_neighbo
 knn_classifier.fit(X_train_class_scaled, y_train_class)
 
 # Predict class labels for the test set
-y_pred_class = knn_classifier.predict(X_test_class)
+y_pred_class = knn_classifier.predict(X_test_class_scaled)
 
 # Evaluate the classification model
 confusion = confusion_matrix(y_test_class, y_pred_class)
