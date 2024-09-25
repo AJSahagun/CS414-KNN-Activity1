@@ -15,7 +15,7 @@ PROJECT_ROOT = path.abspath(path.dirname(path.dirname(__file__)))
 DATA_DIR = path.join(PROJECT_ROOT, "Dataset")
 
 # Define the data file path
-DATA_FILE = path.join(DATA_DIR, "Student-Employability-Datasets.xlsx")
+DATA_FILE = path.join(DATA_DIR, "Student-Employability-Datasets-needed.xlsx")
 
 # Load the Excel file
 df = pd.read_excel(DATA_FILE, sheet_name='Data')
